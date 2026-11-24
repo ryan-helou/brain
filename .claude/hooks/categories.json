@@ -1,0 +1,41 @@
+{
+ "People/Alex Example": {
+  "projects": [],
+  "patterns": [
+   "^alex-"
+  ]
+ },
+ "Building/Apps": {
+  "projects": [
+   "acme-widget"
+  ],
+  "patterns": [
+   "acme-widget",
+   "^widget-"
+  ]
+ },
+ "Building/Testing": {
+  "projects": [],
+  "patterns": [
+   "test-",
+   "verify-",
+   "done-means"
+  ]
+ },
+ "Learning/Reading": {
+  "projects": [],
+  "patterns": [
+   "^book-",
+   "^reading-"
+  ]
+ },
+ "Me/Agent rules": {
+  "projects": [],
+  "patterns": [
+   "keep-replies",
+   "prefer-",
+   "ask-before",
+   "no-emojis"
+  ]
+ }
+}

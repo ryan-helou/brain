@@ -1,0 +1,28 @@
+{
+  "env": {
+    "BRAIN_DIR": "/absolute/path/to/brain",
+    "DEV_DIR": "/absolute/path/to/Developer"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/brain-load.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /absolute/path/to/brain/.claude/hooks/brain-session-log.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

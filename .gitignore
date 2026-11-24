@@ -1,0 +1,46 @@
+# This repo ships the SYSTEM (tooling, templates, examples), never anyone's content.
+# If you turn a copy of it into your own vault, these keep your notes and machine
+# state out of a public remote. Delete the content block if your vault repo is private.
+
+# --- your own content (keep it out of a public repo) ---
+/daily/
+/projects/
+/areas/
+/sources/
+/attachments/
+/archive/
+/memory/
+/inbox.md
+/INDEX.md
+/Projects.md
+/_generated/
+
+# agent-memory is a symlink to the canonical store in ~/.claude — never repo content
+agent-memory
+
+# --- Obsidian / OS state ---
+.obsidian/
+.trash/
+.DS_Store
+
+# --- machine-local settings / permissions ---
+.claude/settings.local.json
+
+# third-party skill pack (kepano obsidian-skills) — reclonable, has its own .git
+.claude/skills/obsidian-skills/
+
+# --- secrets ---
+.env
+*.env
+**/.env
+*-mcp.json
+*.key
+*.pem
+**/credentials*.json
+**/client_secret*.json
+
+# --- build / caches ---
+node_modules/
+__pycache__/
+*.pyc
+*.bak

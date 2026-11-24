@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Vault search that fails loudly.
+#
+# The obsidian CLI talks to a socket owned by the desktop app. When the app is
+# closed or still indexing it prints "Vault not found." AND EXITS 0, so every
+# caller reads a broken daemon as an empty result. This wrapper starts the app
+# if it is not up, retries while it loads, and returns a real exit code.
+#
+#   brain-search "peer validity"           -> matching vault paths
+#   brain-search --context "peer validity" -> matching lines with context
+#
+# Exit codes: 0 searched (a genuine miss prints "No matches found."),
+#             2 usage error, 3 vault unreachable.
+#
+# Config (env):
+#   BRAIN_VAULT  Obsidian vault name          (default: brain)
+#   BRAIN_DIR    vault folder on disk          (default: ~/brain)
+set -uo pipefail
+
+VAULT="${BRAIN_VAULT:-brain}"
+BRAIN="${BRAIN_DIR:-$HOME/brain}"
+
+MODE=search
+[ "${1-}" = "--context" ] && { MODE="search:context"; shift; }
+Q="${*:-}"
+[ -z "$Q" ] && { echo "usage: brain-search [--context] <query>" >&2; exit 2; }
+
+run() { obsidian "$MODE" vault="$VAULT" query="$Q" 2>&1; }
+
+OUT="$(run)"
+if [ "$OUT" = "Vault not found." ]; then
+  # macOS: start Obsidian in the background if it is not running.
+  if command -v open >/dev/null 2>&1; then
+    pgrep -x Obsidian >/dev/null 2>&1 || open -ga Obsidian
+  fi
+  for _ in 1 2 3 4 5 6 7 8 9 10; do
+    sleep 1
+    OUT="$(run)"
+    [ "$OUT" != "Vault not found." ] && break
+  done
+fi
+
+if [ "$OUT" = "Vault not found." ]; then
+  echo "brain-search: Obsidian is not serving the '$VAULT' vault (app closed, or still indexing)." >&2
+  echo "brain-search: grep the memory store instead: grep -ril '<term>' $BRAIN/agent-memory" >&2
+  exit 3
+fi
+
+# a genuine miss is a successful search, and the CLI says "No matches found."
+printf '%s\n' "$OUT"
+exit 0
