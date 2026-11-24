@@ -16,7 +16,7 @@
 /_generated/
 
 # agent-memory is a symlink to the canonical store in ~/.claude — never repo content
-agent-memory
+/agent-memory/
 
 # --- Obsidian / OS state ---
 .obsidian/
